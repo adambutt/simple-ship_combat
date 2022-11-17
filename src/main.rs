@@ -1,7 +1,9 @@
 use simple_ship_combat::*;
 
 fn main() {
-	let mut g = Game::new();
+	let p1 = get_player_name(1);
+	let p2 = get_player_name(2);
+	let mut g = Game::new(&p1, &p2);
 
 	print_hp(g.player1());
 	print_hp(g.player2());
@@ -154,11 +156,35 @@ fn read_values<F>()->Result<Vec<F>, F::Err>
 	let mut alloc_str = String::new();
 	std::io::stdin()
 		.read_line(&mut alloc_str)
-		.expect("Failed to read line");
+		.expect("Failed to read input");
 	
 	alloc_str.split_whitespace()
 		.map(|word| word.parse())
 		.collect()
+}
+
+fn get_player_name(index: usize)-> String {
+	let mut default = String::new();
+	{
+		use std::fmt::Write;
+		write!(default, "Player {}", index).unwrap();
+	}
+
+	print!("Enter name for {0} [{0}]»", default);
+	use std::io::Write;
+	std::io::stdout().flush().unwrap();
+
+	let mut name = String::new();
+	std::io::stdin()
+		.read_line(&mut name)
+		.expect("Failed to read input");
+
+	name = String::from(name.trim());
+	if name.len() < 1 {
+		name = default;
+	}
+
+	return name;
 }
 
 fn dice_list(d: &[u8]) -> String {

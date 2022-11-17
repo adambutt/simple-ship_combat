@@ -14,10 +14,10 @@ pub struct Game<'a> {
 }
 
 impl Game<'_> {
-	pub fn new<'a>() -> Game<'a> {
+	pub fn new<'a>(player1: &'a str, player2: &'a str) -> Game<'a> {
 		Game{
-			p1: Player::new("Player 1"),
-			p2: Player::new("Player 2"),
+			p1: Player::new(player1),
+			p2: Player::new(player2),
 		}
 	}
 
